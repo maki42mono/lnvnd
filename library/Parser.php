@@ -54,7 +54,7 @@ class Parser
         }
     }
 
-    private function getArguments(string $raw): bool | array
+    private function getArguments(string $raw): bool|array
     {
         if (substr($raw, 0, 1) != '{' || substr($raw, -1, 1) != '}') {
             return false;
