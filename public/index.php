@@ -10,3 +10,4 @@ $library = function ($classname) {
 \spl_autoload_register($library);
 
 \library\Command::test();
+\library\Command::readCommand();

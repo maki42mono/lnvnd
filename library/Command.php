@@ -8,4 +8,10 @@ class Command
     {
         echo "Hello world!";
     }
+
+    public static function readCommand(): void
+    {
+        $command = (string)readline();
+        echo "Your command: {$command}";
+    }
 }
