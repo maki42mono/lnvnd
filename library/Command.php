@@ -1,17 +1,42 @@
 <?php
 
+
 namespace library;
+
 
 class Command
 {
-    public static function test(): void
+    private string $name;
+    private array $arguments = [];
+    private array $options = [];
+
+    public function __construct(string $name)
     {
-        echo "Hello world!";
+        $this->name = $name;
     }
 
-    public static function readCommand(): void
+    public function addArgument(string $argument): void
     {
-        $command = (string)readline();
-        echo "Your command: {$command}";
+        $this->arguments[] = $argument;
+    }
+
+    public function getArguments(): array
+    {
+        return $this->arguments;
+    }
+
+    public function addOption(Option $option): void
+    {
+        $this->options[] = $option;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }
