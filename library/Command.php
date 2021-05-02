@@ -20,25 +20,25 @@ class Command
         $this->arguments[] = $argument;
     }
 
-    public function getArguments(): array
+    /*public function getArguments(): array
     {
         return $this->arguments;
-    }
+    }*/
 
     public function addOption(Option $option): void
     {
         $this->options[] = $option;
     }
 
-    public function getOptions(): array
+    /*public function getOptions(): array
     {
         return $this->options;
-    }
+    }*/
 
-    public function getName(): string
+    /*public function getName(): string
     {
         return $this->name;
-    }
+    }*/
 
     public function __toString(): string
     {
