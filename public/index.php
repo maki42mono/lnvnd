@@ -11,3 +11,5 @@ $library = function ($classname) {
 
 $parser = new \library\Parser();
 $parser->readCommand();
+$command = $parser->getCommand();
+echo $command;

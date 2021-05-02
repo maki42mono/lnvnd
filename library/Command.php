@@ -39,4 +39,31 @@ class Command
     {
         return $this->name;
     }
+
+    public function __toString(): string
+    {
+        $res = "\nНазвание команды: {$this->name}\n";
+
+        if ($this->arguments != []) {
+            $tmp_str = "";
+            foreach ($this->arguments as $argument) {
+                $tmp_str .= "    — {$argument}\n";
+            }
+
+            $res .= "\nАргументы:\n{$tmp_str}";
+        }
+
+        if ($this->options == []) {
+            return $res;
+        }
+
+        $tmp_str = "";
+        foreach ($this->options as $option) {
+            $tmp_str .= $option;
+        }
+
+        $res .= "\nОпции:\n{$tmp_str}";
+
+        return $res;
+    }
 }

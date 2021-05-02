@@ -28,4 +28,16 @@ class Option
     {
         return $this->values;
     }
+
+    public function __toString(): string
+    {
+        $res = "    — {$this->name}\n";
+
+        $values_str = "";
+        foreach ($this->values as $value) {
+            $values_str .= "        — {$value}\n";
+        }
+
+        return $res . $values_str;
+    }
 }

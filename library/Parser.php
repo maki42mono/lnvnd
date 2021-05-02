@@ -63,4 +63,9 @@ class Parser
         $arguments = substr($raw, 1, mb_strlen($raw) - 2);
         return explode(',', $arguments);
     }
+
+    public function getCommand(): Command
+    {
+        return $this->command;
+    }
 }
