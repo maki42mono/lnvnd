@@ -56,20 +56,17 @@ abstract class Mapper
             throw new \Exception();
         }
 
-        $sql_value_names = "";
-        $sql_new_values = "";
-        $is_first = true;
-        $delimit = "";
+        $sql_value_names = $sql_new_values = "";
+        $delimit = ", ";
         foreach ($object->attributes as $key => $value) {
             if (isset($value)) {
                 $sql_value_names .= $delimit . $key;
                 $sql_new_values .= "{$delimit}'{$value}'";
-                if ($is_first) {
-                    $is_first = false;
-                    $delimit = ", ";
-                }
             }
         }
+
+        $sql_value_names = substr($sql_value_names, 2, mb_strlen($sql_value_names) - 2);
+        $sql_new_values = substr($sql_new_values, 2, mb_strlen($sql_new_values) - 2);
 
         $sth = $this->pdo
             ->prepare("INSERT INTO {$this->table_name} ({$sql_value_names}) VALUES ({$sql_new_values})");
