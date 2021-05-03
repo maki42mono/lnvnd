@@ -13,7 +13,9 @@ abstract class DomainObject
     private int|null $id;
 
     abstract protected static function targetMapper(): Mapper;
+
     abstract protected function beforeSave();
+
     abstract public static function findOne(array $raw): DomainObject|null;
 
     public function __construct(int $id = null)

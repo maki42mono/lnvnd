@@ -10,6 +10,7 @@ abstract class Mapper
     private string $table_name;
 
     abstract protected function targetTable(): string;
+
     abstract protected function doCreateObject(array $raw): DomainObject;
 
     public function __construct()
@@ -34,10 +35,10 @@ abstract class Mapper
         $sth = $this->pdo->prepare("SELECT * FROM {$this->table_name}");
 
         $sth->execute();
-        $rows =$sth->fetchAll();
+        $rows = $sth->fetchAll();
         $sth->closeCursor();
 
-        if (! is_array($rows)) {
+        if (!is_array($rows)) {
             return null;
         }
 
@@ -52,7 +53,7 @@ abstract class Mapper
     public function save(DomainObject $object): bool
     {
 //        todo: обработать ошибку
-        if (! is_array($object->attributes)) {
+        if (!is_array($object->attributes)) {
             throw new \Exception();
         }
 
@@ -79,7 +80,7 @@ abstract class Mapper
     public function update(DomainObject $object): bool
     {
 //        todo: обработать ошибку
-        if (! is_array($object->attributes)) {
+        if (!is_array($object->attributes)) {
             throw new \Exception();
         }
 

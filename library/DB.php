@@ -10,7 +10,8 @@ class DB extends Singleton
     {
         try {
             $conf = Conf::instance()->get("db");
-            $this->values["pdo"] = new \PDO("{$conf["type"]}:host={$conf["host"]};dbname={$conf["db_name"]}", $conf["username"], $conf["password"]);
+            $this->values["pdo"] = new \PDO("{$conf["type"]}:host={$conf["host"]};dbname={$conf["db_name"]}",
+                $conf["username"], $conf["password"]);
         } catch (\Exception $e) {
             throw new \Exception("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ К БД. ПРОВЕРЬТЕ НАСТРОЙКИ В main-local.php", $e->getCode());
         }

@@ -52,7 +52,8 @@ class Command extends DomainObject
             }
             preg_match($pattern, $tmp[0], $verified_parameters);
             if ($verified_parameters == [] || $tmp[0] !== $verified_parameters[0]) {
-                throw new \Exception("В параметре {$tmp[0]} есть ошибки: можно использовать только буквы, цифры и символы ._", 500);
+                throw new \Exception("В параметре {$tmp[0]} есть ошибки: можно использовать только буквы, цифры и символы ._",
+                    500);
             }
 
             $option = new Option($tmp[0], $arguments);
