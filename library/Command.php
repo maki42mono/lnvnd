@@ -14,6 +14,9 @@ class Command extends DomainObject
     {
         $this->name = $name;
         foreach ($elements as $element) {
+            if ($element == null) {
+                continue;
+            }
             $this->parseNode($element);
         }
         return parent::__construct();
@@ -108,7 +111,9 @@ class Command extends DomainObject
     protected function beforeSave()
     {
         $this->attributes["name"] = $this->name;
-        $this->attributes["arguments"] = '{' . implode(',', $this->arguments) . '}';
+        if ($this->attributes["arguments"] != []) {
+            $this->attributes["arguments"] = '{' . implode(',', $this->arguments) . '}';
+        }
 
         $get_options = function (array $options) {
             $res = "";
