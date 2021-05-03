@@ -32,9 +32,24 @@ class Command extends DomainObject
             }
         } elseif (substr($node, 0, 1) == '[' && substr($node, -1, 1) == ']') {
             $tmp = explode('=', substr($node, 1, mb_strlen($node) - 2));
+            if (count($tmp) != 2) {
+                throw new \Exception("Ошибка в {$node}: задайте один параметр и его значения ", 500);
+            }
+            if (!$tmp[0]) {
+                throw new \Exception("{$node}: параметр указан неверно: ", 500);
+            }
+            if (!$tmp[1]) {
+                throw new \Exception("{$node}: значение параметра указано неверно: ", 500);
+            }
 //            todo: сделать синтаксическую проверку
             $arguments = self::parseArguments($tmp[1]);
             if (!$arguments) {
+                $pattern = '/^(\w+|\d+|\.)*$/i';
+                preg_match($pattern, $tmp[1], $verified_arguments);
+                var_dump($verified_arguments);
+                if ($verified_arguments == [] || $tmp[1] !== $verified_arguments[0]) {
+                    throw new \Exception("В агрументах есть ошибки: можно использовать буквы, цифры и символы ._", 500);
+                }
                 $arguments = [$tmp[1]];
             }
             $option = new Option($tmp[0], $arguments);
