@@ -76,5 +76,16 @@ class Command extends DomainObject
     protected function beforeSave()
     {
         $this->attributes["name"] = $this->name;
+        $this->attributes["arguments"] = implode(';', $this->arguments);
+
+        $get_options = function (array $options) {
+            $res = "";
+            foreach ($options as $option) {
+                $arguments = $option->getValues();
+                $res .= "{$option->getName()}=" . implode(',', $arguments) . ";";
+            }
+            return substr($res, 0, mb_strlen($res) - 1);
+        };
+        $this->attributes["options"] = $get_options($this->options);
     }
 }

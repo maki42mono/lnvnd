@@ -19,15 +19,15 @@ class Option
         }
     }
 
-    /*public function getName(): string
+    public function getName(): string
     {
         return $this->name;
-    }*/
+    }
 
-    /*public function getValues(): array
+    public function getValues(): array
     {
         return $this->values;
-    }*/
+    }
 
     public function __toString(): string
     {

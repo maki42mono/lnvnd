@@ -6,7 +6,7 @@ namespace library;
 
 abstract class Mapper
 {
-    private $pdo;
+    private \PDO $pdo;
     private string $table_name;
 
     abstract protected function targetTable(): string;
@@ -14,7 +14,6 @@ abstract class Mapper
     public function __construct()
     {
         $db = DB::instance();
-        var_dump($db);
         $this->pdo = $db->get("pdo");
         $this->table_name = $this->targetTable();
 
@@ -50,7 +49,7 @@ abstract class Mapper
         $res = $sth->execute();
         $object->setId($this->pdo->lastInsertId());
 
-        $sth->debugDumpParams();
+//        $sth->debugDumpParams();
 
         return $res;
     }
