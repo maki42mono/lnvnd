@@ -49,41 +49,8 @@ class Parser
         if (Command::hasOne(['name' => $command_name])) {
             throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
         }
-        $this->command = new Command($command_name);
-
-        foreach ($elements as $element) {
-            self::parseNode($element);
-        }
+        $this->command = new Command($command_name, $elements);
         $this->command->save();
-    }
-
-    private function parseNode(string $node)
-    {
-        $arguments = self::getArguments($node);
-        if ($arguments) {
-            foreach ($arguments as $argument) {
-                $this->command->addArgument($argument);
-            }
-        } elseif (substr($node, 0, 1) == '[' && substr($node, -1, 1) == ']') {
-            $tmp = explode('=', substr($node, 1, mb_strlen($node) - 2));
-//            todo: сделать синтаксическую проверку
-            $arguments = self::getArguments($tmp[1]);
-            if (!$arguments) {
-                $arguments = [$tmp[1]];
-            }
-            $option = new Option($tmp[0], $arguments);
-            $this->command->addOption($option);
-        }
-    }
-
-    private function getArguments(string $raw): bool|array
-    {
-        if (substr($raw, 0, 1) != '{' || substr($raw, -1, 1) != '}') {
-            return false;
-        }
-
-        $arguments = substr($raw, 1, mb_strlen($raw) - 2);
-        return explode(',', $arguments);
     }
 
     public function getCommand(): Command

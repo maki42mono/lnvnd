@@ -10,10 +10,42 @@ class Command extends DomainObject
     private array $arguments = [];
     private array $options = [];
 
-    public function __construct(string $name)
+    public function __construct(string $name, array $elements = [])
     {
         $this->name = $name;
+        foreach ($elements as $element) {
+            $this->parseNode($element);
+        }
         return parent::__construct();
+    }
+
+    private function parseNode(string $node)
+    {
+        $arguments = self::parseArguments($node);
+        if ($arguments) {
+            foreach ($arguments as $argument) {
+                $this->addArgument($argument);
+            }
+        } elseif (substr($node, 0, 1) == '[' && substr($node, -1, 1) == ']') {
+            $tmp = explode('=', substr($node, 1, mb_strlen($node) - 2));
+//            todo: сделать синтаксическую проверку
+            $arguments = self::parseArguments($tmp[1]);
+            if (!$arguments) {
+                $arguments = [$tmp[1]];
+            }
+            $option = new Option($tmp[0], $arguments);
+            $this->addOption($option);
+        }
+    }
+
+    private function parseArguments(string $raw): bool|array
+    {
+        if (substr($raw, 0, 1) != '{' || substr($raw, -1, 1) != '}') {
+            return false;
+        }
+
+        $arguments = substr($raw, 1, mb_strlen($raw) - 2);
+        return explode(',', $arguments);
     }
 
     public function addArgument(string $argument): void
