@@ -36,11 +36,17 @@ class Parser
                 throw new \Exception("Нелья использовать {help} и задавать значения!", 500);
             }
 
-            echo "HELP";
+            if (!Command::hasOne(['name' => $command_name])) {
+                throw new \Exception("Команда {$command_name} не зарегистрирована", 500);
+            }
+
+            $command = Command::findOne(['name' => $command_name]);
+
+            echo $command;
             exit;
         }
 
-        if (Command::hasOne(['name' => $elements[0]])) {
+        if (Command::hasOne(['name' => $command_name])) {
             throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
         }
         $this->command = new Command($command_name);
