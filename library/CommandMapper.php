@@ -8,9 +8,8 @@ class CommandMapper extends Mapper
 {
     protected function doCreateObject(array $raw): DomainObject
     {
-        $name = $raw["name"];
-        unset($raw["name"]);
-        return new Command($name);
+        $options = explode(';', $raw["options"]);
+        return new Command($raw["name"], array_merge([$raw["arguments"]], $options));
     }
 
     protected function targetTable(): string
