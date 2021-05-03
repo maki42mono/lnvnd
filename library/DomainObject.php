@@ -27,16 +27,6 @@ abstract class DomainObject
         $this->id = $id;
     }
 
-//    protected static function findAllByMapper(Mapper $mapper): array
-//    {
-//        return $mapper->findAll();
-//    }
-
-//    protected static function findInRangeByMapper(int $rows_count, int $start_from, Mapper $mapper): array
-//    {
-//        return $mapper->findInRange($rows_count, $start_from);
-//    }
-
     public function save(): bool
     {
         $this->beforeSave();
@@ -47,30 +37,7 @@ abstract class DomainObject
         return true;
     }
 
-//    public function delete(): bool
-//    {
-//        $mapper = $this->targetMapper();
-//        if (! isset($this->id)) {
-//            return false;
-//        }
-//
-//        return $mapper->delete($this);
-//    }
-
-//    protected static function getTotalCountByMapper(Mapper $mapper): int
-//    {
-//        return $mapper->getTotalCount();
-//    }
-
     abstract protected static function targetMapper(): Mapper;
-
-//    abstract public static function findAll(): array;
-
-//    abstract public static function findInRange(int $rows_count, int $start_from): array;
-
-//    abstract public static function getTotalCount(): int;
-
     abstract protected function beforeSave();
-
     abstract public static function findOne(array $raw): DomainObject|null;
 }

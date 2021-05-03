@@ -4,9 +4,7 @@ namespace library;
 
 class Parser
 {
-    private Command $command;
-
-    public function readCommand(): void
+    public static function readCommand(): void
     {
         unset($_SERVER['argv'][0]);
         $console_input = implode(' ', $_SERVER['argv']);
@@ -19,7 +17,7 @@ class Parser
         self::parseInput($console_input);
     }
 
-    private function parseInput(string $input): void
+    private static function parseInput(string $input): void
     {
         if ($input == "") {
             $commands = Command::findAll();
@@ -58,12 +56,7 @@ class Parser
         if (Command::hasOne(['name' => $command_name])) {
             throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
         }
-        $this->command = new Command($command_name, $elements);
-        $this->command->save();
-    }
-
-    public function getCommand(): Command
-    {
-        return $this->command;
+        $command = new Command($command_name, $elements);
+        $command->save();
     }
 }

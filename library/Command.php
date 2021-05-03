@@ -41,7 +41,6 @@ class Command extends DomainObject
             if (!$tmp[1]) {
                 throw new \Exception("{$node}: значение параметра указано неверно", 500);
             }
-//            todo: сделать синтаксическую проверку
             $arguments = self::parseArguments($tmp[1]);
             $pattern = '/^(\w+|\d+|\.|_)*$/i';
             if (!$arguments) {
@@ -83,25 +82,40 @@ class Command extends DomainObject
         $this->arguments[] = $argument;
     }
 
-    /*public function getArguments(): array
+    public function getArguments(): array
     {
         return $this->arguments;
-    }*/
+    }
+
+    public function setArguments(array $arguments): void
+    {
+        $this->arguments = $arguments;
+    }
 
     public function addOption(Option $option): void
     {
         $this->options[] = $option;
     }
 
-    /*public function getOptions(): array
+    public function getOptions(): array
     {
         return $this->options;
-    }*/
+    }
 
-    /*public function getName(): string
+    public function setOptions(array $options): void
+    {
+        $this->options = $options;
+    }
+
+    public function getName(): string
     {
         return $this->name;
-    }*/
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
     public function __toString(): string
     {
