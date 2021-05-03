@@ -4,7 +4,7 @@
 namespace library;
 
 
-class Command
+class Command extends DomainObject
 {
     private string $name;
     private array $arguments = [];
@@ -13,6 +13,7 @@ class Command
     public function __construct(string $name)
     {
         $this->name = $name;
+        return parent::__construct();
     }
 
     public function addArgument(string $argument): void
@@ -65,5 +66,15 @@ class Command
         $res .= "\nОпции:\n{$tmp_str}";
 
         return $res;
+    }
+
+    protected static function targetMapper(): Mapper
+    {
+        return new CommandMapper();
+    }
+
+    protected function beforeSave()
+    {
+        $this->attributes["name"] = $this->name;
     }
 }

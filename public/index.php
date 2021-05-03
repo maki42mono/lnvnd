@@ -13,8 +13,7 @@ $library = function ($classname) {
 $parser = new \library\Parser();
 
 try {
-    $conf = \library\Conf::instance();
-    var_dump($conf->get("db"));
+    \library\Conf::instance();
     $parser->readCommand();
     $command = $parser->getCommand();
     echo $command;

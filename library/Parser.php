@@ -33,6 +33,7 @@ class Parser
         foreach ($elements as $element) {
             self::parseNode($element);
         }
+        $this->command->save();
     }
 
     private function parseNode(string $node)

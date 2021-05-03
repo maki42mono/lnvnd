@@ -6,22 +6,23 @@ namespace library;
 
 abstract class Singleton
 {
-    protected static self|null $instance = null;
-    protected array $values;
+//    todo: переименовать везде так приватные свойства
+    private static array $_instances = [];
+    protected mixed $values;
 
     abstract protected function __construct();
-    abstract public static function instance();
 
-    public static function _instance(string $class_name = null): self
+    public static function instance(): self
     {
-        if (is_null(self::$instance)) {
-            self::$instance = new $class_name();
+        $class_name = get_called_class();
+        if (!isset(self::$_instances[$class_name])) {
+            self::$_instances[$class_name] = new $class_name();
         }
 
-        return self::$instance;
+        return self::$_instances[$class_name];
     }
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (isset($this->values[$key])) {
             return $this->values[$key];
