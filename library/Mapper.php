@@ -61,6 +61,22 @@ abstract class Mapper
 
     public function findOneByMapper(array $search_raw): DomainObject|null
     {
+        $object_raw = $this->getRawDataWhereAnd($search_raw);
+
+        if ($object_raw) {
+            return $this->doCreateObject($object_raw);
+        }
+        return null;
+    }
+
+    public function hasOneByMapper(array $search_raw): bool
+    {
+        $object_raw = $this->getRawDataWhereAnd($search_raw);
+        return (bool)$object_raw;
+    }
+
+    private function getRawDataWhereAnd(array $search_raw): array|bool
+    {
         $sql_where_and = "";
         foreach ($search_raw as $name => $value) {
             $sql_where_and .= "{$name}='{$value}' AND ";
@@ -74,10 +90,7 @@ abstract class Mapper
         $object_raw = $sth->fetch();
         $sth->closeCursor();
 
-        if ($object_raw) {
-            return $this->doCreateObject($object_raw);
-        }
-        return null;
+        return $object_raw;
     }
 
     abstract protected function doCreateObject(array $raw): DomainObject;

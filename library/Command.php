@@ -94,4 +94,10 @@ class Command extends DomainObject
         $mapper = self::targetMapper();
         return $mapper->findOneByMapper($raw);
     }
+
+    public static function hasOne(array $raw): bool
+    {
+        $mapper = self::targetMapper();
+        return $mapper->hasOneByMapper($raw);
+    }
 }
