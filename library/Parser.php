@@ -6,11 +6,6 @@ class Parser
 {
     private Command $command;
 
-    public static function test(): void
-    {
-        echo "Hello world!";
-    }
-
     public function readCommand(): void
     {
         unset($_SERVER['argv'][0]);
@@ -26,12 +21,30 @@ class Parser
 
     private function parseInput(string $input): void
     {
+        if ($input == "") {
+            echo "Вывести сисок всех команд";
+            exit;
+        }
         $elements = explode(' ', $input);
+        if (count($elements) == 1) {
+            throw new \Exception("Проверьте синтаксис", 500);
+        }
+        $command_name = $elements[0];
+        unset($elements[0]);
+        if (in_array('{help}', $elements)) {
+            if (count($elements) > 1) {
+                throw new \Exception("Нелья использовать {help} и задавать значения!", 500);
+            }
+
+            echo "HELP";
+            exit;
+        }
+
         if (Command::hasOne(['name' => $elements[0]])) {
             throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
         }
-        $this->command = new Command($elements[0]);
-        unset($elements[0]);
+        $this->command = new Command($command_name);
+
         foreach ($elements as $element) {
             self::parseNode($element);
         }

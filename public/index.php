@@ -9,11 +9,10 @@ $library = function ($classname) {
 
 \spl_autoload_register($library);
 
-//todo: добавить проверку на то, что запуск именно из консоли
-$parser = new \library\Parser();
-
 try {
     \library\Conf::instance();
+    //todo: добавить проверку на то, что запуск именно из консоли
+    $parser = new \library\Parser();
     $parser->readCommand();
     $command = $parser->getCommand();
     echo $command;
