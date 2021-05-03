@@ -12,6 +12,10 @@ abstract class DomainObject
     public array $attributes = [];
     private int|null $id;
 
+    abstract protected static function targetMapper(): Mapper;
+    abstract protected function beforeSave();
+    abstract public static function findOne(array $raw): DomainObject|null;
+
     public function __construct(int $id = null)
     {
         $this->id = $id;
@@ -36,8 +40,4 @@ abstract class DomainObject
 
         return true;
     }
-
-    abstract protected static function targetMapper(): Mapper;
-    abstract protected function beforeSave();
-    abstract public static function findOne(array $raw): DomainObject|null;
 }

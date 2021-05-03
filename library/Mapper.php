@@ -10,11 +10,11 @@ abstract class Mapper
     private string $table_name;
 
     abstract protected function targetTable(): string;
+    abstract protected function doCreateObject(array $raw): DomainObject;
 
     public function __construct()
     {
-        $db = DB::instance();
-        $this->pdo = $db->get("pdo");
+        $this->pdo = DB::instance()->get("pdo");
         $this->table_name = $this->targetTable();
 
         $check_if_table_dont_exists = function () {
@@ -112,6 +112,4 @@ abstract class Mapper
 
         return $object_raw;
     }
-
-    abstract protected function doCreateObject(array $raw): DomainObject;
 }

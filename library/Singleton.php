@@ -6,8 +6,7 @@ namespace library;
 
 abstract class Singleton
 {
-//    todo: переименовать везде так приватные свойства
-    private static array $_instances = [];
+    private static array $instances = [];
     protected mixed $values;
 
     abstract protected function __construct();
@@ -15,11 +14,11 @@ abstract class Singleton
     public static function instance(): self
     {
         $class_name = get_called_class();
-        if (!isset(self::$_instances[$class_name])) {
-            self::$_instances[$class_name] = new $class_name();
+        if (!isset(self::$instances[$class_name])) {
+            self::$instances[$class_name] = new $class_name();
         }
 
-        return self::$_instances[$class_name];
+        return self::$instances[$class_name];
     }
 
     public function get(string $key): mixed
