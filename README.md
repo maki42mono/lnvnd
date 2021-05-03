@@ -2,7 +2,7 @@
 ## Как запустить
 — загрузите в БД файл
 ```sh
-b\lvnd.sql
+db\lvnd.sql
 ```
 — создайте конфиг main-local.php
 ```sh
