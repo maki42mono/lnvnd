@@ -34,9 +34,16 @@ abstract class DomainObject
     public function save(): bool
     {
         $this->beforeSave();
-        $this->attributes["created"] = date("Y-m-d H:i:s");
         $mapper = $this->targetMapper();
-        $mapper->save($this);
+        $date_time = date("Y-m-d H:i:s");
+
+        if ($this->getId()) {
+            $this->attributes["updated"] = $date_time;
+            $mapper->update($this);
+        } else {
+            $this->attributes["created"] = $date_time;
+            $mapper->save($this);
+        }
 
         return true;
     }

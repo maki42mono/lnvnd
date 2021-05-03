@@ -76,6 +76,33 @@ abstract class Mapper
         return $res;
     }
 
+    public function update(DomainObject $object): bool
+    {
+//        todo: обработать ошибку
+        if (! is_array($object->attributes)) {
+            throw new \Exception();
+        }
+
+        $update_values = "";
+        $delimit = ", ";
+        foreach ($object->attributes as $key => $value) {
+            if (isset($value) && $key != "id") {
+                $update_values .= "{$delimit}{$key} = '$value'";
+            }
+        }
+
+        $update_values = substr($update_values, 2, mb_strlen($update_values) - 2);
+
+
+        $sth = $this->pdo->prepare(
+            "UPDATE {$this->table_name} SET {$update_values} WHERE id={$object->getId()}"
+        );
+
+//        $res = $sth->execute();
+
+        return $sth->execute();
+    }
+
     public function findOneByMapper(array $search_raw): DomainObject|null
     {
         $object_raw = $this->getRawDataWhereAnd($search_raw);
