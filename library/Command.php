@@ -12,6 +12,7 @@ class Command extends DomainObject
 
     public function __construct(string $name, array $elements = [])
     {
+//        todo: добавить проверку, что тут только символы и _ должны быть
         $this->name = $name;
         foreach ($elements as $element) {
             if ($element == null) {
@@ -111,7 +112,7 @@ class Command extends DomainObject
     protected function beforeSave()
     {
         $this->attributes["name"] = $this->name;
-        if ($this->attributes["arguments"] != []) {
+        if ($this->arguments != []) {
             $this->attributes["arguments"] = '{' . implode(',', $this->arguments) . '}';
         }
 
@@ -123,7 +124,10 @@ class Command extends DomainObject
             }
             return substr($res, 0, mb_strlen($res) - 1);
         };
-        $this->attributes["options"] = $get_options($this->options);
+
+        if ($this->options != []) {
+            $this->attributes["options"] = $get_options($this->options);
+        }
     }
 
     public static function findOne(array $raw): DomainObject|null
