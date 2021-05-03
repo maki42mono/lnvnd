@@ -17,7 +17,14 @@ abstract class Mapper
         $this->pdo = $db->get("pdo");
         $this->table_name = $this->targetTable();
 
-        if (!$this->checkIfTableExists()) {
+        $check_if_table_dont_exists = function () {
+            $sth = $this->pdo->prepare("SHOW TABLES LIKE '{$this->table_name}'");
+            $sth->execute();
+            $res = $sth->fetchAll();
+            $sth->closeCursor();
+            return (count($res) == 0);
+        };
+        if ($check_if_table_dont_exists()) {
             throw new \Exception("Создайте таблицу {$this->table_name}");
         }
     }
@@ -32,14 +39,14 @@ abstract class Mapper
         $sql_value_names = "";
         $sql_new_values = "";
         $is_first = true;
-        $delim = "";
+        $delimit = "";
         foreach ($object->attributes as $key => $value) {
-            if (isset($value) && !is_null($value) && $key != "id") {
-                $sql_value_names .= $delim . $key;
-                $sql_new_values .= "{$delim}'{$value}'";
+            if (isset($value)) {
+                $sql_value_names .= $delimit . $key;
+                $sql_new_values .= "{$delimit}'{$value}'";
                 if ($is_first) {
                     $is_first = false;
-                    $delim = ", ";
+                    $delimit = ", ";
                 }
             }
         }
@@ -49,19 +56,29 @@ abstract class Mapper
         $res = $sth->execute();
         $object->setId($this->pdo->lastInsertId());
 
-//        $sth->debugDumpParams();
-
         return $res;
     }
 
-    private function checkIfTableExists(): bool
+    public function findOneByMapper(array $search_raw): DomainObject|null
     {
-        $sth = $this->pdo->prepare("SHOW TABLES LIKE '{$this->table_name}'");
+        $sql_where_and = "";
+        foreach ($search_raw as $name => $value) {
+            $sql_where_and .= "{$name}='{$value}' AND ";
+        }
+        $sql_where_and = substr($sql_where_and, 0, mb_strlen($sql_where_and) - 5);
+        $sql = "SELECT * FROM {$this->table_name} WHERE {$sql_where_and}";
+        $sth = $this->pdo
+            ->prepare($sql);
         $sth->execute();
-        $res = $sth->fetchAll();
+
+        $object_raw = $sth->fetch();
         $sth->closeCursor();
-        return (count($res) > 0);
+
+        if ($object_raw) {
+            return $this->doCreateObject($object_raw);
+        }
+        return null;
     }
 
-
+    abstract protected function doCreateObject(array $raw): DomainObject;
 }

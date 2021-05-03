@@ -88,4 +88,10 @@ class Command extends DomainObject
         };
         $this->attributes["options"] = $get_options($this->options);
     }
+
+    public static function findOne(array $raw): DomainObject|null
+    {
+        $mapper = self::targetMapper();
+        return $mapper->findOneByMapper($raw);
+    }
 }

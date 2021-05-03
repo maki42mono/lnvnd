@@ -27,7 +27,9 @@ class Parser
     private function parseInput(string $input): void
     {
         $elements = explode(' ', $input);
-//        todo: работать с регистром тут. Если регистр, то можно и в статику вернуться
+        if (Command::findOne(['name' => $elements[0]])) {
+            throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
+        }
         $this->command = new Command($elements[0]);
         unset($elements[0]);
         foreach ($elements as $element) {

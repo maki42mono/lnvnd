@@ -71,4 +71,6 @@ abstract class DomainObject
 //    abstract public static function getTotalCount(): int;
 
     abstract protected function beforeSave();
+
+    abstract public static function findOne(array $raw): DomainObject|null;
 }
