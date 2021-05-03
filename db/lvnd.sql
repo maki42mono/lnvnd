@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 03, 2021 at 10:17 PM
+-- Generation Time: May 03, 2021 at 10:52 PM
 -- Server version: 10.4.12-MariaDB-log
 -- PHP Version: 8.0.1
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `command` (
   `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `arguments` varchar(1000) DEFAULT NULL,
+  `arguments` text DEFAULT NULL,
   `options` text DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL
