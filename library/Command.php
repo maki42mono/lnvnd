@@ -39,19 +39,23 @@ class Command extends DomainObject
                 throw new \Exception("{$node}: параметр указан неверно: ", 500);
             }
             if (!$tmp[1]) {
-                throw new \Exception("{$node}: значение параметра указано неверно: ", 500);
+                throw new \Exception("{$node}: значение параметра указано неверно", 500);
             }
 //            todo: сделать синтаксическую проверку
             $arguments = self::parseArguments($tmp[1]);
+            $pattern = '/^(\w+|\d+|\.|_)*$/i';
             if (!$arguments) {
-                $pattern = '/^(\w+|\d+|\.)*$/i';
                 preg_match($pattern, $tmp[1], $verified_arguments);
-                var_dump($verified_arguments);
                 if ($verified_arguments == [] || $tmp[1] !== $verified_arguments[0]) {
                     throw new \Exception("В агрументах есть ошибки: можно использовать буквы, цифры и символы ._", 500);
                 }
                 $arguments = [$tmp[1]];
             }
+            preg_match($pattern, $tmp[0], $verified_parameters);
+            if ($verified_parameters == [] || $tmp[0] !== $verified_parameters[0]) {
+                throw new \Exception("В параметре {$tmp[0]} есть ошибки: можно использовать только буквы, цифры и символы ._", 500);
+            }
+
             $option = new Option($tmp[0], $arguments);
             $this->addOption($option);
         }
@@ -64,7 +68,14 @@ class Command extends DomainObject
         }
 
         $arguments = substr($raw, 1, mb_strlen($raw) - 2);
-        return explode(',', $arguments);
+        if (!$arguments) {
+            throw new \Exception("Вы не задали ни одного аргумента: {$raw}", 500);
+        }
+        $arguments = explode(',', $arguments);
+        if (in_array("", $arguments)) {
+            throw new \Exception("Не должно быть пустых аргументов: {$raw}", 500);
+        }
+        return $arguments;
     }
 
     public function addArgument(string $argument): void
