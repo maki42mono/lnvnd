@@ -127,6 +127,12 @@ class Command extends DomainObject
         return $mapper->findOneByMapper($raw);
     }
 
+    public static function findAll(): array|null
+    {
+        $mapper = self::targetMapper();
+        return $mapper->findAll();
+    }
+
     public static function hasOne(array $raw): bool
     {
         $mapper = self::targetMapper();

@@ -29,9 +29,29 @@ abstract class Mapper
         }
     }
 
+    public function findAll(): array|null
+    {
+        $sth = $this->pdo->prepare("SELECT * FROM {$this->table_name}");
+
+        $sth->execute();
+        $rows =$sth->fetchAll();
+        $sth->closeCursor();
+
+        if (! is_array($rows)) {
+            return null;
+        }
+
+        $objects = [];
+        foreach ($rows as $row) {
+            $objects[] = $this->doCreateObject($row);
+        }
+
+        return $objects;
+    }
+
     public function save(DomainObject $object): bool
     {
-        //        todo: обработать ошибку
+//        todo: обработать ошибку
         if (! is_array($object->attributes)) {
             throw new \Exception();
         }

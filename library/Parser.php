@@ -22,7 +22,16 @@ class Parser
     private function parseInput(string $input): void
     {
         if ($input == "") {
-            echo "Вывести сисок всех команд";
+            $commands = Command::findAll();
+            if ($commands == null) {
+                throw new \Exception("Не зарегистрировано ни одной команды! Зарегистрируйте что-то, потом выводите", 500);
+            }
+
+            echo "====Список команд====\n\n";
+            foreach ($commands as $command) {
+                echo "{$command}\n";
+                echo "====\n\n";
+            }
             exit;
         }
         $elements = explode(' ', $input);
