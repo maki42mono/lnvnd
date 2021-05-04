@@ -1,9 +1,5 @@
 <?php
 
-$path = __DIR__ . "/../vendor/autoload.php";
-$path = str_replace("/", DIRECTORY_SEPARATOR, $path);
-require_once ($path);
-
 $library = function ($classname) {
     $path = __DIR__ . "/../{$classname}.php";
     $path = str_replace("/", DIRECTORY_SEPARATOR, $path);
