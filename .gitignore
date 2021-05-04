@@ -1,2 +1,3 @@
 .idea
 config/main-local.php
+vendor

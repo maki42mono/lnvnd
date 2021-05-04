@@ -32,7 +32,8 @@ try {
 
     } else {
 //        Иначе получить команду из консоли
-        \library\Parser::readCommand();
+        $parser = new \library\Parser();
+        $parser->readCommand();
     }
 } catch (\Exception $e) {
     echo $e->getMessage();

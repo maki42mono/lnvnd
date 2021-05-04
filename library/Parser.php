@@ -4,10 +4,21 @@ namespace library;
 
 class Parser
 {
-    public static function readCommand(): void
+    private Command $command;
+    private bool $flag_print;
+
+    public function readCommand(string $input = null, $flag_print = true): void
     {
-        unset($_SERVER['argv'][0]);
-        $console_input = implode(' ', $_SERVER['argv']);
+        if (isset($input)) {
+            $inputs = explode(' ', $input);
+//            unset($inputs[0]);
+        } else {
+            $inputs = $_SERVER['argv'];
+            array_unshift($inputs, null);
+        }
+        unset($inputs[0]);
+        unset($inputs[1]);
+        $console_input = implode(' ', $inputs);
         $pattern = '/^(\w+|\d+|\s|\.|\=|\,|\{|\}|\[|\]|\=])*$/i';
         preg_match($pattern, $console_input, $verified_inputs);
 //        Если введены недопустимые символы — сгенерировать ошибку
@@ -15,10 +26,11 @@ class Parser
             throw new \Exception("Вы ввели недопустимые символы. Можно вводить латиницу, цифры, пробелы и симвлы .={}[]",
                 500);
         }
-        self::parseInput($console_input);
+        $this->flag_print = $flag_print;
+        $this->parseInput($console_input);
     }
 
-    private static function parseInput(string $input): void
+    private function parseInput(string $input): void
     {
 //        Пытаемся получить список всех команд
         if ($input == "") {
@@ -30,12 +42,14 @@ class Parser
             }
 
 //            Иначе вывести список всех команд
-            echo "====Список команд====\n\n";
-            foreach ($commands as $command) {
-                echo "{$command}\n";
-                echo "====\n\n";
+            if ($this->flag_print) {
+                echo "====Список команд====\n\n";
+                foreach ($commands as $command) {
+                    echo "{$command}\n";
+                    echo "====\n\n";
+                }
+                exit;
             }
-            exit;
         }
 
 //        Читаем все параметры скрипта через пробелы
@@ -60,10 +74,11 @@ class Parser
             }
 
 //            Иначе выводим инфу о команде
-            $command = Command::findOne(['name' => $command_name]);
-
-            echo $command;
-            exit;
+            $this->command = Command::findOne(['name' => $command_name]);
+            if ($this->flag_print) {
+                echo $this->command;
+                exit;
+            }
         }
 
 //        Если пытаемся зарегистрировать существующею команду — вернуть ошибку
@@ -71,11 +86,17 @@ class Parser
             throw new \Exception("Команда с таким именем уже зарегистрирована! Задайте другое имя");
         }
 //        Иначе зарегистрировать команду
-        $command = new Command($command_name, $elements);
-        $command->save();
+        $this->command = new Command($command_name, $elements);
+        $this->command->save();
+        if ($this->flag_print) {
+            echo "\nЗарегистрирована новая команда: {$this->command->getName()}\n";
+            echo $this->command;
+            exit;
+        }
+    }
 
-        echo "\nЗарегистрирована новая команда: {$command->getName()}\n";
-        echo $command;
-        exit;
+    public function getCommand(): Command
+    {
+        return $this->command;
     }
 }
