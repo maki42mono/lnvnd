@@ -1,6 +1,7 @@
 <?php
 
 namespace library;
+use library\exception;
 
 class Parser
 {
@@ -37,7 +38,7 @@ class Parser
             $commands = Command::findAll();
 //            Если не зарегистрировано ни одной команды — показать ошибку
             if ($commands == null) {
-                throw new \Exception("Не зарегистрировано ни одной команды! Зарегистрируйте что-то, потом выводите",
+                throw new exception\NoCommandsException("Не зарегистрировано ни одной команды! Зарегистрируйте что-то, потом выводите",
                     500);
             }
 
@@ -48,8 +49,8 @@ class Parser
                     echo "{$command}\n";
                     echo "====\n\n";
                 }
-                exit;
             }
+            return;
         }
 
 //        Читаем все параметры скрипта через пробелы
@@ -77,7 +78,7 @@ class Parser
             $this->command = Command::findOne(['name' => $command_name]);
             if ($this->flag_print) {
                 echo $this->command;
-                exit;
+                return;
             }
         }
 
@@ -91,7 +92,6 @@ class Parser
         if ($this->flag_print) {
             echo "\nЗарегистрирована новая команда: {$this->command->getName()}\n";
             echo $this->command;
-            exit;
         }
     }
 

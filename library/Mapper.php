@@ -7,6 +7,7 @@ namespace library;
 abstract class Mapper
 {
     private \PDO $pdo;
+    private bool $test_mode = false;
     private string $table_name;
 
     abstract protected function targetTable(): string;
@@ -16,6 +17,7 @@ abstract class Mapper
     public function __construct()
     {
         $this->pdo = DB::instance()->get("pdo");
+        $this->test_mode = DB::instance()->get("test_mode") ?? false;
         $this->table_name = $this->targetTable();
 
         $check_if_table_dont_exists = function () {
@@ -32,6 +34,10 @@ abstract class Mapper
 
     public function findAll(): array|null
     {
+        if (DB::instance()->get("empty_commands")) {
+            return null;
+        }
+
         $sth = $this->pdo->prepare("SELECT * FROM {$this->table_name}");
 
         $sth->execute();
@@ -52,6 +58,9 @@ abstract class Mapper
 
     public function save(DomainObject $object): bool
     {
+        if ($this->test_mode) {
+            return true;
+        }
 //        todo: обработать ошибку
         if (!is_array($object->attributes)) {
             throw new \Exception();
