@@ -1,3 +1,4 @@
 .idea
 config/main-local.php
 vendor
+.phpunit.result.cache
