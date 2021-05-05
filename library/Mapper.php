@@ -32,6 +32,10 @@ abstract class Mapper
 
     public function findAll(): array|null
     {
+        if (Mode::instance()->get("tables") == Mode::EMPTY_TABLES) {
+            return null;
+        }
+
         $sth = $this->pdo->prepare("SELECT * FROM {$this->table_name}");
 
         $sth->execute();
@@ -102,6 +106,20 @@ abstract class Mapper
 //        $res = $sth->execute();
 
         return $sth->execute();
+    }
+
+    public function delete(DomainObject $object): bool
+    {
+        if ($object->getId() == null) {
+            throw new \Exception();
+        }
+
+        $sth = $this->pdo
+            ->prepare("DELETE FROM {$this->table_name} WHERE id={$object->getId()}");
+        $res = $sth->execute();
+
+        return $res;
+
     }
 
     public function findOneByMapper(array $search_raw): DomainObject|null

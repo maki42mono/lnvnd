@@ -28,4 +28,11 @@ abstract class Singleton
         }
         return null;
     }
+
+    public function set(string $key, mixed $value): void
+    {
+        if (!isset($this->values[$key])) {
+            $this->values[$key] = $value;
+        }
+    }
 }
