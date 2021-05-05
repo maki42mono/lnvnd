@@ -1,25 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
-$library = function ($classname) {
-    $path = __DIR__ . "/../{$classname}.php";
-    $path = str_replace("/", DIRECTORY_SEPARATOR, $path);
-    if (file_exists($path)) {
-        require_once($path);
-    }
-};
+require_once("../vendor/autoload.php");
 
-\spl_autoload_register($library);
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
-
-    private \library\Command $command;
+    private library\Command $command;
 
     public function setUp(): void
     {
-        $mode = \library\Mode::instance();
-        $mode->set("mode", \library\Mode::TEST_MODE);
+        $mode = library\Mode::instance();
+        $mode->set("mode", library\Mode::TEST_MODE);
         parent::setUp();
     }
 
@@ -46,7 +38,7 @@ class ParserTest extends TestCase
 
     public function testNoCommandsRegistered(): void
     {
-        $db = \library\DB::instance();
+        $db = library\DB::instance();
 //        говорим, что у нас пустая таблица
         $db->set("empty_commands", true);
         $input = "php public\index.php";
@@ -55,7 +47,7 @@ class ParserTest extends TestCase
             $parser->readCommand($input, false);
             $this->fail("Ожидалась ошибка типа NoCommandsException");
         } catch (\Exception $e) {
-            $this->assertInstanceOf(\library\exception\NoCommandsException::class, $e);
+            $this->assertInstanceOf(library\exception\NoCommandsException::class, $e);
         }
     }
 
