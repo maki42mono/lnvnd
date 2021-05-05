@@ -13,12 +13,36 @@ use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
+
+    private \library\Command $command;
+
     public function setUp(): void
     {
         $db = \library\DB::instance();
 //        говорим, что нам не нужно сохранять в БД ничего
         $db->set("test_mode", true);
         parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        if (isset($this->command)) {
+            $this->command->delete();
+        }
+        parent::tearDown();
+    }
+
+    public function testHelpSuccess(): void
+    {
+        $command_name = "command_" . time();
+        $input_new_command = "php public\index.php {$command_name} {verbose,overwrite}";
+        $parser = new library\Parser();
+        $parser->readCommand($input_new_command, false);
+        $this->command = $parser->getCommand();
+        $input_help = "php public\index.php {$command_name} {help}";
+        $parser->readCommand($input_help, false);
+        $helped_command = $parser->getCommand();
+        $this->assertEquals((string)$this->command,(string)$helped_command);
     }
 
     public function testNoCommandsRegistered(): void

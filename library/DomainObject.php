@@ -44,9 +44,23 @@ abstract class DomainObject
             $mapper->update($this);
         } else {
             $this->attributes["created"] = $date_time;
+            if (DB::instance()->get("test_mode")) {
+                $this->attributes["id"] = -1;
+            }
             $mapper->save($this);
         }
 
         return true;
+    }
+
+    public function delete(): bool
+    {
+        $mapper = $this->targetMapper();
+        if (! isset($this->id)) {
+            return false;
+        }
+
+        return $mapper->delete($this);
+
     }
 }

@@ -78,8 +78,8 @@ class Parser
             $this->command = Command::findOne(['name' => $command_name]);
             if ($this->flag_print) {
                 echo $this->command;
-                return;
             }
+            return;
         }
 
 //        Если пытаемся зарегистрировать существующею команду — вернуть ошибку

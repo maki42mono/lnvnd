@@ -58,9 +58,9 @@ abstract class Mapper
 
     public function save(DomainObject $object): bool
     {
-        if ($this->test_mode) {
-            return true;
-        }
+//        if ($this->test_mode) {
+//            return true;
+//        }
 //        todo: обработать ошибку
         if (!is_array($object->attributes)) {
             throw new \Exception();
@@ -111,6 +111,20 @@ abstract class Mapper
 //        $res = $sth->execute();
 
         return $sth->execute();
+    }
+
+    public function delete(DomainObject $object): bool
+    {
+        if ($object->getId() == null) {
+            throw new \Exception();
+        }
+
+        $sth = $this->pdo
+            ->prepare("DELETE FROM {$this->table_name} WHERE id={$object->getId()}");
+        $res = $sth->execute();
+
+        return $res;
+
     }
 
     public function findOneByMapper(array $search_raw): DomainObject|null
