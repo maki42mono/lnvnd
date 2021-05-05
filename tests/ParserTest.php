@@ -67,7 +67,7 @@ class ParserTest extends TestCase
         $input = "php public\index.php {$command_name} {verbose,overwrite} [log_file=app.log] {unlimited} [methods={create,update,delete}] [paginate=50] {log}";
         $parser = new library\Parser();
         $parser->readCommand($input, false);
-        $command = $parser->getCommand();
+        $this->command = $parser->getCommand();
         $control_command = new library\Command($command_name);
         $control_command->setArguments([
             'verbose',
@@ -80,6 +80,6 @@ class ParserTest extends TestCase
             new library\Option('methods', ['create','update','delete']),
             new library\Option('paginate', ['50']),
         ]);
-        $this->assertEquals((string)$command,(string)$control_command);
+        $this->assertEquals((string)$this->command,(string)$control_command);
     }
 }

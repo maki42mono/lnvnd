@@ -58,9 +58,6 @@ abstract class Mapper
 
     public function save(DomainObject $object): bool
     {
-//        if ($this->test_mode) {
-//            return true;
-//        }
 //        todo: обработать ошибку
         if (!is_array($object->attributes)) {
             throw new \Exception();
