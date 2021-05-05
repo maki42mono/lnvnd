@@ -6,13 +6,12 @@ use library\exception;
 class Parser
 {
     private Command $command;
-    private bool $flag_print;
+    private bool $not_test_mode = true;
 
-    public function readCommand(string $input = null, $flag_print = true): void
+    public function readCommand(string $input = null): void
     {
         if (isset($input)) {
             $inputs = explode(' ', $input);
-//            unset($inputs[0]);
         } else {
             $inputs = $_SERVER['argv'];
             array_unshift($inputs, null);
@@ -27,7 +26,10 @@ class Parser
             throw new \Exception("Вы ввели недопустимые символы. Можно вводить латиницу, цифры, пробелы и симвлы .={}[]",
                 500);
         }
-        $this->flag_print = $flag_print;
+        $mode = Mode::instance();
+        if ($mode->get("mode") == Mode::TEST_MODE) {
+            $this->not_test_mode = false;
+        }
         $this->parseInput($console_input);
     }
 
@@ -43,7 +45,7 @@ class Parser
             }
 
 //            Иначе вывести список всех команд
-            if ($this->flag_print) {
+            if ($this->not_test_mode) {
                 echo "====Список команд====\n\n";
                 foreach ($commands as $command) {
                     echo "{$command}\n";
@@ -76,7 +78,7 @@ class Parser
 
 //            Иначе выводим инфу о команде
             $this->command = Command::findOne(['name' => $command_name]);
-            if ($this->flag_print) {
+            if ($this->not_test_mode) {
                 echo $this->command;
             }
             return;
@@ -89,7 +91,7 @@ class Parser
 //        Иначе зарегистрировать команду
         $this->command = new Command($command_name, $elements);
         $this->command->save();
-        if ($this->flag_print) {
+        if ($this->not_test_mode) {
             echo "\nЗарегистрирована новая команда: {$this->command->getName()}\n";
             echo $this->command;
         }

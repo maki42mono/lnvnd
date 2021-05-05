@@ -18,9 +18,8 @@ class ParserTest extends TestCase
 
     public function setUp(): void
     {
-        $db = \library\DB::instance();
-//        говорим, что нам не нужно сохранять в БД ничего
-        $db->set("test_mode", true);
+        $mode = \library\Mode::instance();
+        $mode->set("mode", \library\Mode::TEST_MODE);
         parent::setUp();
     }
 
