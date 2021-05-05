@@ -44,7 +44,7 @@ abstract class DomainObject
             $mapper->update($this);
         } else {
             $this->attributes["created"] = $date_time;
-            if (DB::instance()->get("test_mode")) {
+            if (Mode::instance()->get("mode") == Mode::TEST_MODE) {
                 $this->attributes["id"] = -1;
             }
             $mapper->save($this);

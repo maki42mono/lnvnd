@@ -7,11 +7,12 @@ use PHPUnit\Framework\TestCase;
 class ParserTest extends TestCase
 {
     private library\Command $command;
+    private library\Mode $mode;
 
     public function setUp(): void
     {
-        $mode = library\Mode::instance();
-        $mode->set("mode", library\Mode::TEST_MODE);
+        $this->mode = library\Mode::instance();
+        $this->mode->set("mode", library\Mode::TEST_MODE);
         parent::setUp();
     }
 
@@ -38,9 +39,7 @@ class ParserTest extends TestCase
 
     public function testNoCommandsRegistered(): void
     {
-        $db = library\DB::instance();
-//        говорим, что у нас пустая таблица
-        $db->set("empty_commands", true);
+        $this->mode->set("tables", library\Mode::EMPTY_TABLES);
         $input = "php public\index.php";
         $parser = new library\Parser();
         try {
