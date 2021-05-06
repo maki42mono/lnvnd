@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
-
-require_once("../vendor/autoload.php");
+$path = __DIR__ . "/../vendor/autoload.php";
+$path = str_replace('\\', DIRECTORY_SEPARATOR, $path);
+require_once($path);
 
 use PHPUnit\Framework\TestCase;
 
