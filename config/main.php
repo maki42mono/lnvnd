@@ -5,10 +5,10 @@
 
 return [
     "db" => [
-        "type" => "mysql",
-        "host" => "localhost",
-        "db_name" => "name",
-        "username" => "root",
-        "password" => "",
+        "type" => "@type@",
+        "host" => "@host@",
+        "db_name" => "@db_name@",
+        "username" => "@username@",
+        "password" => "@password@",
     ],
 ];

@@ -4,6 +4,10 @@
             "library/"
         ]
     },
+    "require": {
+        "sebastian/version": "3.*",
+        "phing/phing": "2.*"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9"
     }

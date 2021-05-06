@@ -1,14 +1,13 @@
 # Библиотека создания консольных команд
 ## Как запустить
-— загрузите в БД файл
+— Установите зависимости через composer
 ```sh
-db\lvnd.sql
+composer install --dev
 ```
-— создайте конфиг main-local.php
+— создайте конфиг main-local.php и импортируйте схему БД:
 ```sh
-cp config\main.php config\main-local.php
+php .\vendor\phing\phing\bin\phing.php
 ```
-— настройте в config\main.php параметры подключения к БД
 — запустите скрипт через консоль
 ```sh
 php public\index.php [параметры скрипта]
@@ -37,6 +36,8 @@ php public\index.php
 ## Что использовал
 — PHP 8.0 без фреймворков
 — MySQL для регистрации команд
+— PHPUnit для тестов
+— Phing для сбора конфига и импорта БД
 
 ## Тесты
 — Выдаст ошибку, потому что нет команд в БД

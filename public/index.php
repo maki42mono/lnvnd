@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 $path = __DIR__ . "/../vendor/autoload.php";
+$path = str_replace('\\', DIRECTORY_SEPARATOR, $path);
 require_once($path);
 
 try {
