@@ -5,10 +5,10 @@
         ]
     },
     "require": {
-        "sebastian/version": "3.*"
+        "sebastian/version": "3.*",
+        "phing/phing": "2.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
-        "phing/phing": "2.*"
+        "phpunit/phpunit": "^9"
     }
 }

@@ -22,8 +22,21 @@
                     <token key="password" value="${db.password}" />
                 </replacetokens>
             </filterchain>
-
         </copy>
+
+        <trycatch property="error">
+            <try>
+                <pdosqlexec url="${db.type}:host=${db.host};dbname=${db.db_name}"
+                            userid="${db.username}" password="${db.password}">
+                    <fileset dir="db">
+                        <include name="*.sql"/>
+                    </fileset>
+                </pdosqlexec>
+            </try>
+            <catch>
+                <echo message="Table ${error} is already exists!" />
+            </catch>
+        </trycatch>
         <property name="main_local_is_set" value="true"/>
     </target>
 

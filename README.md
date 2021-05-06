@@ -2,13 +2,12 @@
 ## Как запустить
 — загрузите в БД файл
 ```sh
-db\lvnd.sql
+composer install --dev
 ```
-— создайте конфиг main-local.php
+— создайте конфиг main-local.php и имсортируйте схему БД:
 ```sh
-cp config\main.php config\main-local.php
+php .\vendor\phing\phing\bin\phing.php
 ```
-— настройте в config\main.php параметры подключения к БД
 — запустите скрипт через консоль
 ```sh
 php public\index.php [параметры скрипта]
